@@ -254,10 +254,6 @@ Pada pendekatan imperative, developer mengubah elemen UI satu per satu ketika da
 **Bagaimana breakpoint dan theme memengaruhi pengalaman pengguna?**
 Breakpoint memastikan informasi tetap nyaman dibaca di layar kecil maupun besar: satu kolom di layar sempit agar kartu tidak terlalu sempit, dan dua kolom di layar lebar agar ruang tidak terbuang. Eksperimen mengubah breakpoint ke 300 menunjukkan bahwa nilai ini langsung menentukan kapan layout berganti. Theme yang terpusat membuat tampilan konsisten, dan dark mode membantu kenyamanan di lingkungan gelap, selama kontras warna tetap terjaga. Karena itu warna header diambil dari `ColorScheme`, bukan warna tetap.
 
-**Apa yang Anda verifikasi dari rekomendasi AI setelah tugas inti selesai?**
-[ISI dengan hasil percobaan Anda: misal apakah layout tetap responsif di berbagai lebar, apakah kartu overflow saat ukuran font diperbesar, apakah widget yang disarankan tersedia di Flutter stabil (`flutter analyze` bersih), dan bukti berupa screenshot atau hasil test.]
-
-
 ## 11. Kesimpulan
 
 Pada minggu ini saya membangun halaman Academic Overview yang responsif (1 kolom pada layar sempit, 2 kolom pada layar lebar), mendukung tema terang dan gelap dengan toggle, serta memiliki label aksesibilitas. Praktikum ini memperjelas cara kerja `Expanded` pada `Row`, peran `LayoutBuilder` dalam layout responsif, dan manfaat memusatkan warna serta tipografi pada `Theme`. Kendala yang muncul (struktur folder, tes bawaan, izin instalasi di HP, finder `Card`, dan Git) menjadi pelajaran tentang membaca pesan error dengan teliti.
