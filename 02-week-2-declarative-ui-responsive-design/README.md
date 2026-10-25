@@ -7,6 +7,7 @@
 | **Kelas** | TI_3F |
 | **Mata Kuliah** | Pemrograman Mobile |
 | **Program Studi** | Teknik Informatika, Politeknik Negeri Malang |
+| **Tanggal** | [ISI TANGGAL] |
 
 ## 1. Tujuan
 
@@ -33,24 +34,11 @@ Membangun halaman **Academic Overview**, sebuah dashboard mahasiswa yang:
 - Flutter (Material 3) dan Dart
 - Widget utama: `LayoutBuilder`, `GridView.count`, `Card`, `CupertinoSwitch`, `Semantics`, `ExcludeSemantics`
 - Testing: `flutter_test`
-- Perangkat uji: [ISI: misal HP Android M2101K7BNY dan Google Chrome]
+- Perangkat uji: [ISI: misal HP Android M2101K7BNY]
 
-## 4. Struktur Folder
+## 4. Hasil Praktikum
 
-```
-244107020057_PemrogramanMobile/
-└── 02-week-2-declarative-ui-responsive-design/
-    ├── lib/main.dart
-    ├── test/widget_test.dart
-    ├── docs/ai-log.md
-    ├── screenshots/
-    ├── pubspec.yaml
-    └── README.md
-```
-
-## 6. Hasil Praktikum
-
-### 6.1 Warm-up: Kartu Profil
+### 4.1 Warm-up: Kartu Profil
 
 Sebelum membuat dashboard, saya melatih widget dasar dengan kartu profil sederhana. Kartu memakai `Container` (ukuran, padding, dekorasi), `Column` (susunan vertikal), `Row` (susunan horizontal), dan `Expanded` (pembagian ruang tersisa).
 
@@ -58,21 +46,27 @@ Sebelum membuat dashboard, saya melatih widget dasar dengan kartu profil sederha
 
 **Eksperimen warm-up:**
 
-| Eksperimen | Hasil pengamatan |
-|---|---|
-| Menghapus `Expanded` pada baris nama | Teks yang panjang tidak membungkus dan meluber keluar kartu; muncul garis kuning-hitam bertuliskan *RIGHT OVERFLOWED BY ... PIXELS*. |
-| Menghapus `mainAxisSize: MainAxisSize.min` | Tinggi `Column` terluar mengikuti ruang maksimum sehingga kartu menjadi lebih tinggi dan tidak lagi pas dengan isinya. |
-| Menambah baris `Email` | Berhasil dengan pola `Row` + `Expanded` yang sama seperti baris NIM dan Kelas. |
+| No | Eksperimen | Hasil pengamatan |
+|---|---|---|
+| 1 | Menghapus `Expanded` pada baris nama | Teks yang panjang tidak membungkus dan meluber keluar kartu; muncul garis kuning-hitam *RIGHT OVERFLOWED BY ... PIXELS*. |
+| 2 | Menghapus `mainAxisSize: MainAxisSize.min` | Tinggi `Column` terluar mengikuti ruang maksimum sehingga kartu tidak lagi pas dengan isinya. |
+| 3 | Menambah baris `Email` | Berhasil dengan pola `Row` + `Expanded` yang sama seperti baris NIM dan Kelas. |
+
+Eksperimen 1: tanpa `Expanded`
 
 ![Warm-up tanpa Expanded](screenshots/02-warmup-tanpa-expanded.jpg)
 
+Eksperimen 2: tanpa `mainAxisSize.min`
+
 ![Warm-up tanpa mainAxisSize](screenshots/03-warmup-tanpa-mainaxissize.jpg)
 
-![Warm-up menambahkan email](screenshots/04-tambah-baris-email.jpg)
+Eksperimen 3: menambah baris Email
 
-**Penjelasan:** `Row` memberi anak yang tidak fleksibel lebar tak terbatas pada sumbu utama. Tanpa `Expanded`, `Column` di samping avatar tidak mendapat batas lebar, sehingga teks tidak punya alasan untuk membungkus. Dengan `Expanded`, `Column` hanya mengisi sisa ruang setelah avatar dan jarak, sehingga teks otomatis turun ke baris berikutnya.
+![Menambah baris Email](screenshots/04-tambah-baris-email.jpg)
 
-### 6.2 Dashboard Responsif
+**Penjelasan:** `Row` memberi anak yang tidak fleksibel batas lebar tak terbatas pada sumbu utamanya. Tanpa `Expanded`, `Column` di samping avatar tidak mendapat batas lebar, sehingga teks tidak membungkus dan dapat meluber bila lebih panjang dari ruang yang tersisa. Dengan `Expanded`, `Row` terlebih dahulu menempatkan avatar dan jarak, lalu memaksa `Column` mengisi seluruh sisa lebar (sekitar 236 px pada kartu selebar 320 px). Karena batas lebarnya kini pasti, teks yang panjang otomatis turun ke baris berikutnya.
+
+### 4.2 Dashboard Responsif
 
 Jumlah kolom ditentukan oleh `LayoutBuilder` berdasarkan lebar yang tersedia:
 
@@ -83,13 +77,13 @@ const double kWideBreakpoint = 700;
 final columns = constraints.maxWidth >= kWideBreakpoint ? 2 : 1;
 ```
 
-| Layar sempit (1 kolom) | Layar lebar (2 kolom) |
-|---|---|
-| ![Layar sempit terang](screenshots/05-hasil-dashboard.jpg) | ![Layar lebar terang](screenshots/06-wide-light.png) |
-
 Halaman terdiri atas `ProfileHeader` di atas dan `GridView.count` di bawahnya (dibungkus `Expanded` agar mengisi sisa tinggi layar).
 
-### 6.3 Tema Terang dan Gelap
+| Layar sempit (1 kolom) | Layar lebar (2 kolom, HP landscape) |
+|---|---|
+| ![Hasil dashboard](screenshots/05-hasil-dashboard.jpg) | ![Uji HP landscape](screenshots/09-uji-hp-landscape.jpg) |
+
+### 4.3 Tema Terang dan Gelap
 
 Tema diatur melalui `theme`, `darkTheme`, dan `themeMode` pada `MaterialApp`. Toggle `CupertinoSwitch` di AppBar mengubah state `isDark` pada `StatefulWidget`, lalu `MaterialApp` dibangun ulang dengan tema yang sesuai.
 
@@ -97,23 +91,30 @@ Tema diatur melalui `theme`, `darkTheme`, dan `themeMode` pada `MaterialApp`. To
 themeMode: isDark ? ThemeMode.dark : ThemeMode.light,
 ```
 
-| Layar sempit (gelap) | Layar lebar (gelap) |
-|---|---|
-| ![Layar sempit gelap](screenshots/05-narrow-dark.png) | ![Layar lebar gelap](screenshots/07-wide-dark.png) |
+Warna header dan teks diambil dari `ColorScheme` (`primaryContainer` dan `onPrimaryContainer`), sehingga kontras tetap terbaca di kedua tema (lihat tampilan gelap pada bagian 6.4).
 
-Warna header dan teks diambil dari `ColorScheme` (`primaryContainer` dan `onPrimaryContainer`), sehingga kontras tetap terbaca di kedua tema.
+### 4.4 Eksperimen Layout
 
-### 6.4 Eksperimen Layout
+| No | Eksperimen | Hasil pengamatan |
+|---|---|---|
+| 1 | Breakpoint diubah dari `700` menjadi `300` | Karena lebar HP dalam posisi portrait sudah di atas 300, layar kecil yang tadinya 1 kolom menjadi 2 kolom. Ini membuktikan jumlah kolom hanya bergantung pada nilai breakpoint. Nilai dikembalikan ke `700`. |
+| 2 | `themeMode` diubah menjadi `ThemeMode.dark` | Aplikasi selalu gelap. Toggle masih bergerak tetapi tema tidak berubah, karena `themeMode` tidak lagi membaca `isDark`. |
+| 3 | `themeMode` diubah menjadi `ThemeMode.system` | Tema mengikuti pengaturan mode gelap perangkat. Toggle tidak berpengaruh pada tema. Setelah itu dikembalikan ke `isDark ? ThemeMode.dark : ThemeMode.light`. |
+| 4 | Ukuran layar berbeda | HP portrait menampilkan 1 kolom, HP landscape menampilkan 2 kolom (lihat bagian 6.2). |
 
-| Eksperimen | Hasil |
-|---|---|
-| Breakpoint diubah (500 / 700 / 1000) | [ISI: misal pada breakpoint 500 layar landscape HP sudah 2 kolom; pada 1000 layar tablet masih 1 kolom] |
-| `themeMode` dipaksa `ThemeMode.dark` | Aplikasi selalu gelap. Toggle tetap bergerak tetapi tema tidak berubah karena `themeMode` tidak lagi membaca `isDark`. Setelah dikembalikan, toggle berfungsi normal. |
-| Ukuran layar berbeda | [ISI: ukuran yang diuji dan jumlah kolomnya, misal HP portrait: 1 kolom; HP landscape: 2 kolom; Chrome 1200 px: 2 kolom] |
+Eksperimen 1: breakpoint 700 menjadi 300
 
-![Eksperimen breakpoint](screenshots/08-eksperimen-breakpoint.png)
+![Breakpoint 300](screenshots/06-ubah-700-menjadi-300.jpg)
 
-### 6.5 Aksesibilitas
+Eksperimen 2: `ThemeMode.dark`
+
+![ThemeMode dark](screenshots/07-ubah-thememode-ke-dark.jpg)
+
+Eksperimen 3: `ThemeMode.system`
+
+![ThemeMode system](screenshots/08-thememode-system.jpg)
+
+### 4.5 Aksesibilitas
 
 - Toggle tema dibungkus `Semantics(label: 'Mode gelap')` agar screen reader membacanya sebagai saklar mode gelap, bukan saklar tanpa nama.
 - Ikon matahari/bulan diberi `ExcludeSemantics` karena hanya dekoratif.
@@ -121,11 +122,9 @@ Warna header dan teks diambil dari `ColorScheme` (`primaryContainer` dan `onPrim
 - Setiap `InfoCard` diberi `Semantics(container: true, label: '<judul>: <nilai>')` sehingga terbaca sebagai satu informasi, misalnya "Attendance: 92%".
 - Informasi tidak hanya disampaikan melalui warna; setiap kartu memiliki teks judul dan nilai.
 
-Verifikasi dilakukan dengan `showSemanticsDebugger: true` (dipasang sementara, lalu dihapus).
+![Menambahkan Semantics](screenshots/10-menambahkan-semantics.jpg)
 
-![Semantics debugger](screenshots/09-semantics.png)
-
-## 7. Penjelasan Kode Penting
+## 5. Penjelasan Kode Penting
 
 | Bagian | Fungsi |
 |---|---|
@@ -139,27 +138,31 @@ Verifikasi dilakukan dengan `showSemanticsDebugger: true` (dipasang sementara, l
 | `CupertinoSwitch` | Contoh widget Cupertino di aplikasi Material |
 | `Semantics` + `ExcludeSemantics` | Label screen reader yang jelas tanpa bacaan ganda |
 
-## 8. Pengujian
+## 6. Pengujian
 
 Dua widget test memverifikasi perilaku responsif dengan mengubah ukuran layar lewat `tester.view`:
 
 | Test | Ukuran layar | Yang diverifikasi | Hasil |
 |---|---|---|---|
-| Dashboard satu kolom di layar sempit | 400 x 800 | Lebar kartu kurang dari 700 | [ISI: Lulus] |
-| Dashboard dua kolom di layar lebar | 1200 x 800 | Lebar kartu lebih dari 500 | [ISI: Lulus] |
+| Dashboard satu kolom di layar sempit | 400 x 800 | Lebar kartu kurang dari 700 | Lulus |
+| Dashboard dua kolom di layar lebar | 1200 x 800 | Lebar kartu lebih dari 500 | Lulus |
 
 ```powershell
 flutter analyze   # No issues found!
 flutter test      # All tests passed!
 ```
 
-![flutter analyze](screenshots/10-flutter-analyze.png)
+`flutter analyze`
 
-![flutter test](screenshots/11-flutter-test.png)
+![flutter analyze](screenshots/flutter-analyze.png)
 
-## 9. Refactoring
+`flutter test`
 
-Setelah tugas utama berjalan, kode dirapikan:
+![flutter test](screenshots/flutter-test.png)
+
+## 7. Refactoring
+
+Setelah tugas utama berjalan, kode dirapikan sesuai Refactoring challenge:
 
 | No | Perubahan | Sebelum | Sesudah |
 |---|---|---|---|
@@ -170,33 +173,77 @@ Setelah tugas utama berjalan, kode dirapikan:
 
 Tampilan aplikasi tetap sama sebelum dan sesudah refactor; yang berubah hanya struktur kode.
 
-## 10. AI Prompt Challenge
+## 8. AI Prompt Challenge
 
-AI dipakai setelah implementasi mandiri selesai, hanya untuk membandingkan alternatif tata letak dan memperkuat konsep. Dokumentasi lengkap ada di [`docs/ai-log.md`](docs/ai-log.md).
+AI dipakai setelah implementasi mandiri selesai, hanya untuk membandingkan alternatif tata letak, memperkuat konsep `Expanded`, dan mengaudit rekomendasinya sendiri.
 
-| Prompt | Ringkasan output | Keputusan | Alasan teknis |
-|---|---|---|---|
-| Bandingkan `GridView` dan `LayoutBuilder` + `Column` dari sisi responsif dan aksesibilitas | `GridView` lebih ringkas dan hanya merender yang terlihat, tetapi tinggi kartu terikat `childAspectRatio`. `Column` mengikuti isi kartu, tetapi kodenya lebih panjang dan perlu scroll manual. | [ISI: misal sebagian: tetap `GridView.count`] | [ISI: misal 4 kartu saja dan kode lebih sederhana, tetapi risiko font besar dicatat] |
-| Kapan `Expanded` menyebabkan overflow | Empat kasus: lebar `Row` tak terbatas, tinggi `Column` tak terbatas, `Expanded` bukan child langsung, dan saudara berukuran tetap melampaui ruang. | Diterima sebagai penguat konsep | Cocok dengan hasil eksperimen warm-up saya |
-| Verifikasi: responsif di bawah 600 px, aksesibilitas, widget stabil | Responsif di bawah 600 px aman (1 kolom). Tinggi tetap pada grid tetap berisiko saat font diperbesar. Semua widget tersedia di Flutter stabil. | [ISI] | [ISI] |
+### Prompt 1: Desain
 
-**Temuan verifikasi:** [ISI: satu hal dari saran AI yang Anda uji, misal hasil memperbesar ukuran font di HP ke maksimum, apakah kartu overflow atau tidak, beserta screenshot].
+**Prompt:** "Bandingkan dua tata letak dashboard akademik untuk Flutter: versi `GridView` dan versi `LayoutBuilder` + `Column`. Jelaskan trade-off responsif dan aksesibilitasnya."
 
-![AI Prompt Challenge](screenshots/12-ai-prompt-challenge.png)
+**Ringkasan output:** `GridView` lebih ringkas dan hanya merender item yang terlihat, tetapi tinggi kartu terikat `childAspectRatio` sehingga berisiko saat font diperbesar. `LayoutBuilder` + `Column` mengikuti isi kartu dan lebih aman untuk font besar, tetapi kodenya lebih panjang dan scroll harus dibuat manual.
 
-## 11. Kendala dan Solusi
+**Keputusan:** [ISI: misal diterima sebagian, tetap memakai `GridView.count`].
+**Alasan teknis:** [ISI: misal dashboard hanya berisi 4 kartu dengan isi pendek, sehingga `GridView.count` lebih sederhana; risiko font besar dicatat].
+
+### Prompt 2: Penguatan konsep
+
+**Prompt:** "Jelaskan kapan penggunaan `Expanded` justru menyebabkan overflow di dalam `Row`, beri contoh kode yang gagal dan perbaikannya."
+
+**Ringkasan output:**
+
+| Kasus | Penyebab | Perbaikan |
+|---|---|---|
+| `Expanded` di `Row` dalam scroll horizontal | Lebar tak terbatas, tidak ada sisa ruang untuk dibagi | Beri batas lebar atau buang `Expanded` |
+| `Expanded` di `Column` dalam `ListView` | Tinggi tak terbatas | Buang `Expanded` atau beri tinggi tetap |
+| `Expanded` dibungkus `Padding` | Bukan child langsung dari `Row`/`Column`/`Flex` | Pindahkan `Expanded` ke luar |
+| Saudara berukuran tetap melampaui ruang | Total ukuran tetap lebih besar dari lebar layar | Jadikan semuanya fleksibel, atau pakai `Wrap`/scroll |
+
+**Keputusan:** Diterima sebagai penguat konsep.
+**Alasan teknis:** Penjelasan kasus lebar tak terbatas konsisten dengan eksperimen warm-up (bagian 6.1): saat `Expanded` dihapus, `Column` tidak mendapat batas lebar sehingga teks meluber.
+
+### Prompt 3: Verifikasi
+
+**Prompt:** "Periksa kembali rekomendasi layout di atas: apakah tetap responsif di bawah 600px, apakah mengurangi aksesibilitas, dan apakah ada widget yang tidak tersedia di Flutter stabil saat ini?"
+
+**Ringkasan output:**
+
+1. **Responsif di bawah 600 px:** ya, karena jumlah kolom ditentukan `constraints.maxWidth >= 700`, sehingga lebar di bawah 700 selalu 1 kolom.
+2. **Aksesibilitas:** AI mengoreksi saran awalnya. `mainAxisExtent` tetap tidak ikut membesar saat font diperbesar, sehingga tidak lebih baik dari `childAspectRatio` untuk kasus font besar. Alternatif yang lebih kuat adalah menskalakan tinggi dengan `MediaQuery.textScalerOf(context)` atau memakai versi `Column`.
+3. **Ketersediaan widget:** `LayoutBuilder`, `GridView.count`, `CupertinoSwitch`, `Semantics`, dan `ExcludeSemantics` tersedia di Flutter stabil. `TextScaler` membutuhkan Flutter 3.16 atau lebih baru.
+
+**Keputusan:** [ISI]
+**Alasan teknis:** [ISI]
+
+### Bukti verifikasi
+
+| Pemeriksaan | Hasil |
+|---|---|
+| Lebar layar di bawah 700 (HP portrait) | 1 kolom |
+| Lebar layar di atas 700 (HP landscape) | 2 kolom |
+| Font sistem diperbesar ke maksimum | [ISI: overflow atau tidak] |
+| `flutter analyze` | No issues found |
+| `flutter test` | All tests passed |
+
+![Bukti AI Prompt Challenge 1](screenshots/11.jpg)
+
+![Bukti AI Prompt Challenge 2](screenshots/12.jpg)
+
+**Temuan verifikasi:** Rekomendasi AI tidak diterapkan mentah-mentah. Saran `mainAxisExtent` tetap dikoreksi oleh AI sendiri saat diaudit, sehingga kode `GridView.count` dipertahankan. [ISI: tambahkan satu temuan dari uji font besar atau lebar layar yang Anda lihat sendiri.]
+
+## 9. Kendala dan Solusi
 
 | Kendala | Penyebab | Solusi |
 |---|---|---|
-| `flutter run` gagal dengan `No pubspec.yaml file found` | Perintah dijalankan dari folder root portfolio, padahal root bukan project Flutter | Pindah ke folder minggu 2 (`cd 02-week-2-...`) lalu jalankan ulang |
-| `flutter analyze` melaporkan error `MyApp`/`DashboardApp` tidak dikenal di `test/` | File `widget_test.dart` masih berisi tes counter bawaan `flutter create` | Isi `widget_test.dart` diganti dengan tes dashboard |
-| Instalasi ke HP gagal: `INSTALL_FAILED_USER_RESTRICTED` | HP Xiaomi memblokir instalasi lewat USB | Mengaktifkan **Instal via USB** (dan debugging USB keamanan) di Opsi pengembang, lalu menyetujui dialog instalasi di HP |
+| `flutter run` gagal: `No pubspec.yaml file found` | Perintah dijalankan dari folder root portfolio, padahal root bukan project Flutter | Pindah ke folder minggu 2 lalu jalankan ulang |
+| `flutter analyze` melaporkan `MyApp`/`DashboardApp` tidak dikenal di `test/` | `widget_test.dart` masih berisi tes counter bawaan `flutter create` | Isi `widget_test.dart` diganti dengan tes dashboard |
+| Instalasi ke HP gagal: `INSTALL_FAILED_USER_RESTRICTED` | HP Xiaomi memblokir instalasi lewat USB | Mengaktifkan **Instal via USB** di Opsi pengembang dan menyetujui dialog instalasi di HP |
 | `flutter test` gagal: `Bad state: Too many elements` | `tester.getSize(find.byType(Card))` membutuhkan tepat satu elemen, sedangkan halaman memiliki empat `Card` | Finder diubah menjadi `find.byType(Card).first` |
 | Build pertama sangat lama (sekitar 749 detik pada `assembleDebug`) | Gradle mengunduh dependensi pada build pertama | Dibiarkan sampai selesai; build berikutnya jauh lebih cepat |
+| `git add` gagal: `pathspec ... did not match any files` | Path ditulis dari root, padahal terminal berada di dalam folder minggu 2 | Memakai path relatif dari posisi terminal (`git add lib`) |
+| `git push` gagal: `no upstream branch` | Branch `main` belum terhubung ke GitHub | `git push --set-upstream origin main` |
 
-![Error Too many elements](screenshots/14-error-too-many-elements.png)
-
-## 12. Refleksi
+## 10. Refleksi
 
 **Apa perbedaan cara berpikir imperative dan declarative saat membangun UI?**
 Pada pendekatan imperative, developer mengubah elemen UI satu per satu ketika data berubah. Pada pendekatan declarative, developer mendeskripsikan tampilan berdasarkan state saat ini, dan Flutter membangun ulang bagian yang relevan ketika state berubah. Pada tugas ini, toggle tema hanya mengubah `isDark` lewat `setState`, lalu `themeMode` pada `MaterialApp` membaca nilai tersebut. Tidak ada kode yang mengubah warna widget satu per satu.
@@ -205,20 +252,12 @@ Pada pendekatan imperative, developer mengubah elemen UI satu per satu ketika da
 `Expanded` membantu membagi sisa ruang di dalam `Row` atau `Column`, misalnya agar teks panjang membungkus alih-alih meluber. Pada eksperimen warm-up, menghapus `Expanded` membuat `Column` di samping avatar tidak punya batas lebar sehingga teks overflow. Sebaliknya, `Expanded` bisa menimbulkan error jika sumbu utamanya tidak terbatas (misalnya `Row` di dalam scroll horizontal atau `Column` di dalam `ListView`), atau jika `Expanded` bukan child langsung dari `Row`/`Column`/`Flex`.
 
 **Bagaimana breakpoint dan theme memengaruhi pengalaman pengguna?**
-Breakpoint memastikan informasi tetap nyaman dibaca di layar kecil maupun besar: satu kolom di layar sempit agar kartu tidak terlalu sempit, dan dua kolom di layar lebar agar ruang tidak terbuang. Theme yang terpusat membuat tampilan konsisten, dan dark mode membantu kenyamanan di lingkungan gelap, selama kontras warna tetap terjaga. Karena itu warna header diambil dari `ColorScheme`, bukan warna tetap.
+Breakpoint memastikan informasi tetap nyaman dibaca di layar kecil maupun besar: satu kolom di layar sempit agar kartu tidak terlalu sempit, dan dua kolom di layar lebar agar ruang tidak terbuang. Eksperimen mengubah breakpoint ke 300 menunjukkan bahwa nilai ini langsung menentukan kapan layout berganti. Theme yang terpusat membuat tampilan konsisten, dan dark mode membantu kenyamanan di lingkungan gelap, selama kontras warna tetap terjaga. Karena itu warna header diambil dari `ColorScheme`, bukan warna tetap.
 
 **Apa yang Anda verifikasi dari rekomendasi AI setelah tugas inti selesai?**
-[ISI dengan hasil percobaan Anda: misal apakah layout tetap responsif di lebar 320/360/599 px, apakah kartu overflow saat ukuran font diperbesar, apakah widget yang disarankan tersedia di Flutter stabil (`flutter analyze` bersih), dan bukti berupa screenshot atau hasil test.]
+[ISI dengan hasil percobaan Anda: misal apakah layout tetap responsif di berbagai lebar, apakah kartu overflow saat ukuran font diperbesar, apakah widget yang disarankan tersedia di Flutter stabil (`flutter analyze` bersih), dan bukti berupa screenshot atau hasil test.]
 
-## 13. Checklist Verifikasi
 
-- [x] `flutter analyze` tidak menghasilkan error
-- [x] `flutter test` lulus semua widget test responsif
-- [x] Aplikasi berjalan pada ukuran layar sempit dan lebar
-- [x] Dark mode memiliki kontras dan teks yang terbaca
-- [x] Struktur widget dapat dijelaskan saat code review
-- [x] Screenshot, folder `test/`, dan README tersimpan pada folder tugas Week 2
+## 11. Kesimpulan
 
-## 14. Kesimpulan
-
-Pada minggu ini saya membangun halaman Academic Overview yang responsif (1 kolom pada layar sempit, 2 kolom pada layar lebar), mendukung tema terang dan gelap dengan toggle, serta memiliki label aksesibilitas. Praktikum ini memperjelas cara kerja `Expanded` pada `Row`, peran `LayoutBuilder` dalam layout responsif, dan manfaat memusatkan warna serta tipografi pada `Theme`. Kendala yang muncul (struktur folder, tes bawaan, izin instalasi di HP, dan finder `Card`) menjadi pelajaran tentang membaca pesan error dengan teliti.
+Pada minggu ini saya membangun halaman Academic Overview yang responsif (1 kolom pada layar sempit, 2 kolom pada layar lebar), mendukung tema terang dan gelap dengan toggle, serta memiliki label aksesibilitas. Praktikum ini memperjelas cara kerja `Expanded` pada `Row`, peran `LayoutBuilder` dalam layout responsif, dan manfaat memusatkan warna serta tipografi pada `Theme`. Kendala yang muncul (struktur folder, tes bawaan, izin instalasi di HP, finder `Card`, dan Git) menjadi pelajaran tentang membaca pesan error dengan teliti.
