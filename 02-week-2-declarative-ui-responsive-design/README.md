@@ -231,19 +231,7 @@ AI dipakai setelah implementasi mandiri selesai, hanya untuk membandingkan alter
 
 **Temuan verifikasi:** Rekomendasi AI tidak diterapkan mentah-mentah. Saran `mainAxisExtent` tetap dikoreksi oleh AI sendiri saat diaudit, sehingga kode `GridView.count` dipertahankan. 
 
-## 9. Kendala dan Solusi
-
-| Kendala | Penyebab | Solusi |
-|---|---|---|
-| `flutter run` gagal: `No pubspec.yaml file found` | Perintah dijalankan dari folder root portfolio, padahal root bukan project Flutter | Pindah ke folder minggu 2 lalu jalankan ulang |
-| `flutter analyze` melaporkan `MyApp`/`DashboardApp` tidak dikenal di `test/` | `widget_test.dart` masih berisi tes counter bawaan `flutter create` | Isi `widget_test.dart` diganti dengan tes dashboard |
-| Instalasi ke HP gagal: `INSTALL_FAILED_USER_RESTRICTED` | HP Xiaomi memblokir instalasi lewat USB | Mengaktifkan **Instal via USB** di Opsi pengembang dan menyetujui dialog instalasi di HP |
-| `flutter test` gagal: `Bad state: Too many elements` | `tester.getSize(find.byType(Card))` membutuhkan tepat satu elemen, sedangkan halaman memiliki empat `Card` | Finder diubah menjadi `find.byType(Card).first` |
-| Build pertama sangat lama (sekitar 749 detik pada `assembleDebug`) | Gradle mengunduh dependensi pada build pertama | Dibiarkan sampai selesai; build berikutnya jauh lebih cepat |
-| `git add` gagal: `pathspec ... did not match any files` | Path ditulis dari root, padahal terminal berada di dalam folder minggu 2 | Memakai path relatif dari posisi terminal (`git add lib`) |
-| `git push` gagal: `no upstream branch` | Branch `main` belum terhubung ke GitHub | `git push --set-upstream origin main` |
-
-## 10. Refleksi
+## 9. Refleksi
 
 **Apa perbedaan cara berpikir imperative dan declarative saat membangun UI?**
 Pada pendekatan imperative, developer mengubah elemen UI satu per satu ketika data berubah. Pada pendekatan declarative, developer mendeskripsikan tampilan berdasarkan state saat ini, dan Flutter membangun ulang bagian yang relevan ketika state berubah. Pada tugas ini, toggle tema hanya mengubah `isDark` lewat `setState`, lalu `themeMode` pada `MaterialApp` membaca nilai tersebut. Tidak ada kode yang mengubah warna widget satu per satu.
@@ -254,6 +242,6 @@ Pada pendekatan imperative, developer mengubah elemen UI satu per satu ketika da
 **Bagaimana breakpoint dan theme memengaruhi pengalaman pengguna?**
 Breakpoint memastikan informasi tetap nyaman dibaca di layar kecil maupun besar: satu kolom di layar sempit agar kartu tidak terlalu sempit, dan dua kolom di layar lebar agar ruang tidak terbuang. Eksperimen mengubah breakpoint ke 300 menunjukkan bahwa nilai ini langsung menentukan kapan layout berganti. Theme yang terpusat membuat tampilan konsisten, dan dark mode membantu kenyamanan di lingkungan gelap, selama kontras warna tetap terjaga. Karena itu warna header diambil dari `ColorScheme`, bukan warna tetap.
 
-## 11. Kesimpulan
+## 10. Kesimpulan
 
 Pada minggu ini saya membangun halaman Academic Overview yang responsif (1 kolom pada layar sempit, 2 kolom pada layar lebar), mendukung tema terang dan gelap dengan toggle, serta memiliki label aksesibilitas. Praktikum ini memperjelas cara kerja `Expanded` pada `Row`, peran `LayoutBuilder` dalam layout responsif, dan manfaat memusatkan warna serta tipografi pada `Theme`. Kendala yang muncul (struktur folder, tes bawaan, izin instalasi di HP, finder `Card`, dan Git) menjadi pelajaran tentang membaca pesan error dengan teliti.
