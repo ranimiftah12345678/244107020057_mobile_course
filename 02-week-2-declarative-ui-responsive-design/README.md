@@ -229,7 +229,7 @@ AI dipakai setelah implementasi mandiri selesai, hanya untuk membandingkan alter
 
 ![Bukti AI Prompt Challenge 2](screenshots/12.jpg)
 
-**Temuan verifikasi:** Rekomendasi AI tidak diterapkan mentah-mentah. Saran `mainAxisExtent` tetap dikoreksi oleh AI sendiri saat diaudit, sehingga kode `GridView.count` dipertahankan. [ISI: tambahkan satu temuan dari uji font besar atau lebar layar yang Anda lihat sendiri.]
+**Temuan verifikasi:** Rekomendasi AI tidak diterapkan mentah-mentah. Saran `mainAxisExtent` tetap dikoreksi oleh AI sendiri saat diaudit, sehingga kode `GridView.count` dipertahankan. 
 
 ## 9. Kendala dan Solusi
 
